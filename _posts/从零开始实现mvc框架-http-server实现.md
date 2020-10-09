@@ -3,10 +3,9 @@ title: 从零开始实现mvc框架-http server实现
 date: 2020-10-09 15:33:37
 tags: http, server, nio
 ---
-# 从零开始实现mvc框架-http server实现
-## 1.前言
+## 前言
 [Boomvc](https://github.com/StevenKin/Boomvc)完成已经有一段时间了，但拖延到现在才开始记录。写这篇文章主要是回忆和复盘一下思路。如题所讲，Boomvc是一个mvc框架，但是它自带http server功能，也就是说不需要tomcat之类的server，可以在一个jar包里启动而不需要其他的依赖，这就需要自己去写http server的实现，这一篇我就梳理一下实现。
-## 2.server接口
+## server接口
 首先定义一个server接口
 ```
 public interface Server {
@@ -131,7 +130,7 @@ public class EventExecutorGroup implements Task {
     }
 }
 ```
-## 3. EventExecutor
+## EventExecutor
 EventExecutor就是一个io线程，它持有一个selector，selector是Java NIO核心组件中的一个，用于检查一个或多个Channel（通道）的状态是否处于可读、可写。如此可以实现单线程管理多个channels,也就是可以管理多个网络链接。io线程就不断轮询这个selector，获取多个selector key，根据这个key的状态，比如accept，read，write执行不同的逻辑。在这里EventExecutor是有多个的，也就是说selector有多个，boss EventExecutorGroup只有一个EventExecutor，它负责accept连接请求，并把接受的连接注册到workers EventExecutorGroup里，由worker线程处理read和write。
 ```
 public class EventExecutor {
@@ -194,7 +193,7 @@ public class EventExecutor {
 }
 ```
 selector轮询是在EventLoop这里实现的。
-## 4. EventLoop
+## EventLoop
 ```
 public class EventLoop implements Runnable, Task {
     private static final Logger logger = LoggerFactory.getLogger(EventLoop.class);
@@ -306,7 +305,7 @@ this.childGroup.register(socketChannel, SelectionKey.OP_READ, new HttpProtocolPa
 子线程中的EventLoop完成 read -> 业务处理 -> send 的完整流程。这种模式主线程和子线程的职责非常明确，主线程只负责接收新连接，子线程负责完成后续的业务处理，并且使用多个selector，read，业务处理，write不会影响accept，这对于大量并发连接可以提高accept的速度，不会因业务处理使大量连接堆积，这里其实参考了netty的思想。如下图
 
 ![netty](/images/netty.jpeg)
-## 5.遇到的坑
+## 遇到的坑
 在写EventExecutor的register方法是，发现如果直接在selector上调用register的话，可能会造成死锁。因为selector被多个线程访问，当其中一个线程调用selector.select()方法时发生阻塞，这个线程会一直持有selector的锁，这时另一个线程的register方法会被阻塞。如果这时直接调用 wakeup，有可能还没有注册成功又阻塞了，可以使用信号量从 select 返回后先阻塞，等注册完后在执行。具体实现如下
 ```
 try {
