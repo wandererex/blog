@@ -66,6 +66,12 @@ initAndRegister完成后，进行真正的bind，
 继续跟，到pipeline的head节点的bind方法
 ![netty](netty源码解读-服务端启动/image11.png)，再继续，终于看到jdk的bind了（太不容易了。。。）
 ![netty](netty源码解读-服务端启动/image12.png)
+bind之后，触发active事件
+![netty](netty源码解读-服务端启动/image13.png)，跟进去，到readIfIsAutoRead方法
+![netty](netty源码解读-服务端启动/image14.png)
+继续跟，到AbstractNioChannel的doBeginRead方法
+![netty](netty源码解读-服务端启动/image15.png)
+在这里，可以看到关注了serversocketchannel的op_accept事件
 ### 总结
 1. 首先创建NioEventLoopGroup，在这一步会创建selector
 2. 创建ServerBootstrap，对它进行配置后，调用bind方法
@@ -74,3 +80,4 @@ initAndRegister完成后，进行真正的bind，
       2. init()，主要设置options和attr，并在pipeline上add ChannelInitializer
       3. 真正进行register到一个eventloop上，并触发added事件回调ChannelInitializer，
    2. doBind0，最终调用到head的bind方法， 通过调用unsafe的bind方法完成端口的绑定 
+   3. 触发active事件，关注op_accept事件
