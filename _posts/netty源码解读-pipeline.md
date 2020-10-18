@@ -150,5 +150,6 @@ public final class Server {
 ![netty](netty源码解读-pipeline/image16.png)
 进入head handler
 ![netty](netty源码解读-pipeline/image17.png)
+到这个地方，write传播结束。可以看到，写入channel的msg会从tail写入，经过outbound handler，最终调用head的write方法进行处理。
 
 
