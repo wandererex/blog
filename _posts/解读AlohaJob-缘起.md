@@ -23,6 +23,7 @@ ElasticJob很长一段时间没有维护了，有一堆bug。xxl-job是现在很
 1. java 8及以上的版本
 2. mysql
 3. spring boot
+
 当然你可以依赖任意多的组件，比如框架现在没有提供调度器的服务发现，你可以使用框架的扩展点机制实现服务发现接口，接入公司的服务发现平台，比如zookeeper，eureka等。
 ## 结尾
 [AlohaJob](https://github.com/StevenKin/AlohaJob)现在正在开发，如果你有兴趣，欢迎star，fork，提issue，Thanks♪(･ω･)ﾉ
