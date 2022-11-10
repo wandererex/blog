@@ -10,68 +10,68 @@ tags: tcp/ip, MacOS
 2. git clone git@github.com:jpcap/jpcap.git & cd jpcap
 3. 修改文件
 make/releases.makefile
-++++ RELEASE_HOME=/Users/$USERNAME/dev/releases
-++++ export RELEASE_HOME=/Users/$USERNAME/dev/releases
----- cp $(PROJECT_HOME)/$(LIB_PATH)/libjpcap.so $(SYS_DEST)/lib
-++++ cp $(PROJECT_HOME)/$(LIB_PATH)/libjpcap.jnilib $(SYS_DEST)/lib
+\+\+\+\+ RELEASE_HOME=/Users/$USERNAME/dev/releases
+\+\+\+\+ export RELEASE_HOME=/Users/$USERNAME/dev/releases
+\-\-\-\- cp $(PROJECT_HOME)/$(LIB_PATH)/libjpcap.so $(SYS_DEST)/lib
+\+\+\+\+ cp $(PROJECT_HOME)/$(LIB_PATH)/libjpcap.jnilib $(SYS_DEST)/lib
 
 make/rules.makefile
----- $(JAVAC) $(JFLAGS) $*.java
-++++ $(JAVAC) $(JFLAGS) -classpath .:/Users/wangjingguo/workspace/jpcap/src/java:/Users/wangjingguo/workspace/jpcap/thirdParty/jars/fooware_CommandLine-1.0.jar:/Users/wangjingguo/workspace/jpcap/thirdParty/jars/dev-classes_net.ultrametrics-0.03.jar:/Users/wangjingguo/workspace/jpcap/thirdParty/jars/junit.jar  $*.java
+\-\-\-\- $(JAVAC) $(JFLAGS) $*.java
+\+\+\+\+ $(JAVAC) $(JFLAGS) -classpath .:/Users/$USERNAME/workspace/jpcap/src/java:/Users/$USERNA/workspace/jpcap/thirdParty/jars/fooware_CommandLine-1.0.jar:/Users/$USERNAME /workspace/jpcap/thirdParty/jars/dev-classes_net.ultrametrics-0.03.jar:/Users/$USERNA/workspace/jpcap/thirdParty/jars/junit.jar  $*.java
 
 makefile
-++++ PROJECT_HOME=/Users/wangjingguo/workspace/jpcap
+\+\+\+\+ PROJECT_HOME=/Users/$USERNAME/workspace/jpcap
 
 scripts/env_jpcap
----- export PROJECT_HOME=~/dev/github/jpcap
-++++ export PROJECT_HOME=/Users/wangjingguo/workspace/jpcap
----- export RELEASE_HOME=~/dev/releases
-++++ export RELEASE_HOME=/Users/wangjingguo/dev/releases
+\-\-\-\- export PROJECT_HOME=\~/dev/github/jpcap
+\+\+\+\+ export PROJECT_HOME=/Users/$USERNAME/workspace/jpcap
+\-\-\-\- export RELEASE_HOME=\~/dev/releases
+\+\+\+\+ export RELEASE_HOME=/Users/$USERNAME/dev/releases
 
 src/c/makefile
----- LIBS = -lnsl /usr/lib/libpcap.a
-++++ LIBS = -lnsl /usr/local/lib/libpcap.a
----- LIBS = /usr/lib/libpcap.A.dylib
-++++ LIBS = /usr/local/lib/libpcap.A.dylib
+\-\-\-\- LIBS = -lnsl /usr/lib/libpcap.a
+\+\+\+\+ LIBS = -lnsl /usr/local/lib/libpcap.a
+\-\-\-\- LIBS = /usr/lib/libpcap.A.dylib
+\+\+\+\+ LIBS = /usr/local/lib/libpcap.A.dylib
 
 src/java/net/sourceforge/jpcap/capture/jpcap.c
----- #include <JavaVM/jni.h>
-++++ #include <jni.h>
----- for(;ifr < last; (char*)ifr += ifrSize, ifr=(struct ifreq *)s) {
-++++ for(;ifr < last; ifr = (ifreq*)((char*)ifr + ifrSize), ifr=(struct ifreq *)s) {
+\-\-\-\- #include <JavaVM/jni.h>
+\+\+\+\+ #include <jni.h>
+\-\-\-\- for(;ifr < last; (char*)ifr += ifrSize, ifr=(struct ifreq *)s) {
+\+\+\+\+ for(;ifr < last; ifr = (ifreq*)((char*)ifr + ifrSize), ifr=(struct ifreq *)s) {
 
 src/java/net/sourceforge/jpcap/capture/makefile
-----                   -I$(SDKROOT)/System/Library/Frameworks/JavaVM.framework/Headers
-----       LIBS = /usr/lib/libpcap.A.dylib
-++++                   -I$(SDKROOT)/System/Library/Frameworks/JavaVM.framework/Headers\
-++++                   -I/Library/Java/JavaVirtualMachines/jdk1.8.0_271.jdk/Contents/Home/include/darwin\
-++++                   -I/Library/Java/JavaVirtualMachines/jdk1.8.0_271.jdk/Contents/Home/include
-++++        LIBS = /usr/local/lib/libpcap.A.dylib
-----       javah -jni $(PKG).$(WRAPPER)
-++++       javah -jni -classpath .:/Users/wangjingguo/workspace/jpcap/src/java:/Users/wangjingguo/workspace/jpcap/thirdParty/jars/fooware_CommandLine-1.0.jar:/U
-sers/wangjingguo/workspace/jpcap/thirdParty/jars/dev-classes_net.ultrametrics-0.03.jar:/Users/wangjingguo/workspace/jpcap/thirdParty/jars/junit.jar  $(PKG).$
+\-\-\-\-                   -I$(SDKROOT)/System/Library/Frameworks/JavaVM.framework/Headers
+\-\-\-\-       LIBS = /usr/lib/libpcap.A.dylib
+\+\+\+\+                   -I$(SDKROOT)/System/Library/Frameworks/JavaVM.framework/Headers\
+\+\+\+\+                   -I/Library/Java/JavaVirtualMachines/jdk1.8.0_271.jdk/Contents/Home/include/darwin\
+\+\+\+\+                   -I/Library/Java/JavaVirtualMachines/jdk1.8.0_271.jdk/Contents/Home/include
+\+\+\+\+        LIBS = /usr/local/lib/libpcap.A.dylib
+\-\-\-\-       javah -jni $(PKG).$(WRAPPER)
+\+\+\+\+       javah -jni -classpath .:/Users/$USERNAME/workspace/jpcap/src/java:/Users/$USERNAME/workspace/jpcap/thirdParty/jars/fooware_CommandLine-1.0.jar:/U
+sers/$USERNAME/workspace/jpcap/thirdParty/jars/dev-classes_net.ultrametrics-0.03.jar:/Users/$USERNAME/workspace/jpcap/thirdParty/jars/junit.jar  $(PKG).$
 (WRAPPER)
  else
-----       javah -jni $(PKG).$(WRAPPER)
-++++       javah -jni -classpath .:/Users/wangjingguo/workspace/jpcap/src/java:/Users/wangjingguo/workspace/jpcap/thirdParty/jars/fooware_CommandLine-1.0.jar:/U
-sers/wangjingguo/workspace/jpcap/thirdParty/jars/dev-classes_net.ultrametrics-0.03.jar:/Users/wangjingguo/workspace/jpcap/thirdParty/jars/junit.jar  $(PKG).$
+\-\-\-\-       javah -jni $(PKG).$(WRAPPER)
+\+\+\+\+       javah -jni -classpath .:/Users/$USERNAME/workspace/jpcap/src/java:/Users/$USERNAME/workspace/jpcap/thirdParty/jars/fooware_CommandLine-1.0.jar:/U
+sers/$USERNAME/workspace/jpcap/thirdParty/jars/dev-classes_net.ultrametrics-0.03.jar:/Users/$USERNAME/workspace/jpcap/thirdParty/jars/junit.jar  $(PKG).$
 (WRAPPER)
 
 src/java/net/sourceforge/jpcap/capture/process.hpp
----- #include <JavaVM/jni.h>
-++++ #include <jni.h>
+\-\-\-\- #include <JavaVM/jni.h>
+\+\+\+\+ #include <jni.h>
 
 src/java/net/sourceforge/jpcap/makefile
-----       mkdir -p $(RH)/jdoc
-----       mkdir -p $(RH)/jdoc/jpcap
-----       javadoc -windowtitle $(JAVADOC_TITLE) \
-----       -d $(RH)/jdoc/jpcap $(PKG_NAMES)
-----       jar cvf $(JDOCJAR_NAME) -C $(RH)/jdoc/jpcap .
-++++#      mkdir -p $(RH)/jdoc
-++++#      mkdir -p $(RH)/jdoc/jpcap
-++++#      javadoc -windowtitle $(JAVADOC_TITLE) \
-++++#      -d $(RH)/jdoc/jpcap $(PKG_NAMES)
-++++#      jar cvf $(JDOCJAR_NAME) -C $(RH)/jdoc/jpcap .
+\-\-\-\-       mkdir -p $(RH)/jdoc
+\-\-\-\-       mkdir -p $(RH)/jdoc/jpcap
+\-\-\-\-       javadoc -windowtitle $(JAVADOC_TITLE) \
+\-\-\-\-       -d $(RH)/jdoc/jpcap $(PKG_NAMES)
+\-\-\-\-       jar cvf $(JDOCJAR_NAME) -C $(RH)/jdoc/jpcap .
+\+\+\+\+       #      mkdir -p $(RH)/jdoc
+\+\+\+\+       #      mkdir -p $(RH)/jdoc/jpcap
+\+\+\+\+       #      javadoc -windowtitle $(JAVADOC_TITLE) \
+\+\+\+\+       #      -d $(RH)/jdoc/jpcap $(PKG_NAMES)
+\+\+\+\+       #      jar cvf $(JDOCJAR_NAME) -C $(RH)/jdoc/jpcap .
 4. 让配置生效 ./scripts/env_jpcap  
 5. make clean && make  
 6. make release 
