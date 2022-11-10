@@ -14,32 +14,32 @@ make/releases.makefile
 \+\+\+\+ export RELEASE_HOME=/Users/$USERNAME/dev/releases
 \-\-\-\- cp $(PROJECT_HOME)/$(LIB_PATH)/libjpcap.so $(SYS_DEST)/lib
 \+\+\+\+ cp $(PROJECT_HOME)/$(LIB_PATH)/libjpcap.jnilib $(SYS_DEST)/lib
-
+---
 make/rules.makefile
 \-\-\-\- $(JAVAC) $(JFLAGS) $*.java
 \+\+\+\+ $(JAVAC) $(JFLAGS) -classpath .:/Users/$USERNAME/workspace/jpcap/src/java:/Users/$USERNA/workspace/jpcap/thirdParty/jars/fooware_CommandLine-1.0.jar:/Users/$USERNAME /workspace/jpcap/thirdParty/jars/dev-classes_net.ultrametrics-0.03.jar:/Users/$USERNA/workspace/jpcap/thirdParty/jars/junit.jar  $*.java
-
+---
 makefile
 \+\+\+\+ PROJECT_HOME=/Users/$USERNAME/workspace/jpcap
-
+---
 scripts/env_jpcap
 \-\-\-\- export PROJECT_HOME=\~/dev/github/jpcap
 \+\+\+\+ export PROJECT_HOME=/Users/$USERNAME/workspace/jpcap
-\-\-\-\- export RELEASE_HOME=\~/dev/releases
+\-\-\-\- export RELEASE_HOME=~/dev/releases
 \+\+\+\+ export RELEASE_HOME=/Users/$USERNAME/dev/releases
-
+---
 src/c/makefile
 \-\-\-\- LIBS = -lnsl /usr/lib/libpcap.a
 \+\+\+\+ LIBS = -lnsl /usr/local/lib/libpcap.a
 \-\-\-\- LIBS = /usr/lib/libpcap.A.dylib
 \+\+\+\+ LIBS = /usr/local/lib/libpcap.A.dylib
-
+---
 src/java/net/sourceforge/jpcap/capture/jpcap.c
 \-\-\-\- #include <JavaVM/jni.h>
 \+\+\+\+ #include <jni.h>
 \-\-\-\- for(;ifr < last; (char*)ifr += ifrSize, ifr=(struct ifreq *)s) {
 \+\+\+\+ for(;ifr < last; ifr = (ifreq*)((char*)ifr + ifrSize), ifr=(struct ifreq *)s) {
-
+---
 src/java/net/sourceforge/jpcap/capture/makefile
 \-\-\-\-                   -I$(SDKROOT)/System/Library/Frameworks/JavaVM.framework/Headers
 \-\-\-\-       LIBS = /usr/lib/libpcap.A.dylib
@@ -56,11 +56,11 @@ sers/$USERNAME/workspace/jpcap/thirdParty/jars/dev-classes_net.ultrametrics-0.03
 \+\+\+\+       javah -jni -classpath .:/Users/$USERNAME/workspace/jpcap/src/java:/Users/$USERNAME/workspace/jpcap/thirdParty/jars/fooware_CommandLine-1.0.jar:/U
 sers/$USERNAME/workspace/jpcap/thirdParty/jars/dev-classes_net.ultrametrics-0.03.jar:/Users/$USERNAME/workspace/jpcap/thirdParty/jars/junit.jar  $(PKG).$
 (WRAPPER)
-
+---
 src/java/net/sourceforge/jpcap/capture/process.hpp
 \-\-\-\- #include <JavaVM/jni.h>
 \+\+\+\+ #include <jni.h>
-
+---
 src/java/net/sourceforge/jpcap/makefile
 \-\-\-\-       mkdir -p $(RH)/jdoc
 \-\-\-\-       mkdir -p $(RH)/jdoc/jpcap
